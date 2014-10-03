@@ -9,7 +9,7 @@ module NanocLunrjs
 
       @@nanoc_lunrjs_search_index_file_name = 'search.json'
 
-      attr_reader :index_file
+      attr_accessor :index_file
 
       SELECTORS = {
         title: [:h1, :h2],
@@ -20,14 +20,14 @@ module NanocLunrjs
 
       SKIP_IN_INDEX = [
         "\r", "\n", "\t",
-        /<[\w"=]+>/, /<\/\w+>/
+        /<[\w"=]+>/, /<\/\w+>/,
         "<", ">"
       ]
 
       def initialize(hash={})
         super
 
-        index_name = @site[:nanoc_lunrjs_search_index_file_name] || @@nanoc_lunrjs_search_index_file_name
+        index_name = @site.config[:nanoc_lunrjs_search_index_file_name] || @@nanoc_lunrjs_search_index_file_name
         self.index_file = File.join(@site.config[:output_dir], index_name)
       end
 
@@ -87,13 +87,13 @@ module NanocLunrjs
         content.squeeze(' ').strip
       end
 
-      def add_to_idex(index, item)
+      def add_to_index(index, item)
         index[item_path] = item
         store_index_file index
       end
 
       def load_index_file
-        {} unless File.exist?(@search_file)
+        return {} unless File.exist?(index_file)
         JSON.parse(File.read(index_file))
       end
 

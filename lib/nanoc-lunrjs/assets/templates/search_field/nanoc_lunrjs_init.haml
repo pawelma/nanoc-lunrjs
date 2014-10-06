@@ -1,3 +1,11 @@
 - path = path.split('/')[-2..-1].join('/')
 - scripts.each do |script|
   %script{ src: "/#{path}/#{script}", type: 'text/javascript' }
+
+:javascript
+  $('#nanoc-lunrjs-search input#query').lunrSearch({
+    indexUrl: '/search.json',
+    results:  '#nanoc-lunrjs-results',
+    entries:  '.entries',
+    template: '#nanoc-lunrjs-results-template'
+  });

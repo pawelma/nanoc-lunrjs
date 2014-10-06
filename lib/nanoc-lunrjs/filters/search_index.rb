@@ -77,7 +77,7 @@ module NanocLunrjs
         end
         selectors_xpath = "[#{selectors_xpath}]" unless selectors_xpath.empty?
 
-        html.xpath("//*#{selectors_xpath}/text()").to_a.join(' ')
+        html.xpath("//article//*#{selectors_xpath}/text()").to_a.join(' ')
       end
 
       def extract_text(content)

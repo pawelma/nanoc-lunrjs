@@ -17,7 +17,7 @@ module NanocLunrjs
           FileUtils.mkdir_p js_out_path
         end
 
-        required_js_dependencies = ['jquery.min.js', 'lunr.min.js', 'nanoc-lunr.js']
+        required_js_dependencies = ['jquery.min.js', 'lunr.min.js', 'mustache.js', 'URI.min.js', 'nanoc-lunr.js']
         required_js_dependencies.each do |script|
           FileUtils.cp(File.join(js_in_path, script), js_out_path)
         end
@@ -25,9 +25,14 @@ module NanocLunrjs
         ::Haml::Engine.new(template).render(Object.new, path: js_out_path, scripts: required_js_dependencies)
       end
 
-      def search_field
-        nanoc_lunrjs_search
+      def nanoc_lunrjs_results
+        template = File.read(template_path(__method__))
+        ::Haml::Engine.new(template).render(Object.new)
       end
+
+      alias_method :search_field, :nanoc_lunrjs_search
+      alias_method :search_init, :nanoc_lunrjs_init
+      alias_method :search_results, :nanoc_lunrjs_results
 
       private
 

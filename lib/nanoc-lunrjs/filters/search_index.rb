@@ -24,6 +24,8 @@ module NanocLunrjs
         "<", ">"
       ]
 
+      SKIP_CLASSES = [ 'nav' ]
+
       def initialize(hash={})
         super
 
@@ -70,6 +72,12 @@ module NanocLunrjs
       end
 
       def html_content(html, selectors)
+        SKIP_CLASSES.each do |skip|
+          html.css("article #{skip}").each do |node|
+            node.remove
+          end
+        end
+
         selectors_xpath = ""
         selectors.each do |selector|
           selectors_xpath << " or " unless selectors_xpath.empty?
